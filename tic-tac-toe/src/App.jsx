@@ -11,6 +11,21 @@ const initialGameBoard = [
   [null, null, null]
 ];
 
+function deriveWinner(gameBoard, players){
+  let winner = null
+  for (const combination of WINNING_COMBINATIONS) {
+    const firstSquareSymbol = gameBoard[combination[0].row][combination[0].col]
+    const secondSquareSymbol = gameBoard[combination[1].row][combination[1].col]
+    const thirdSquareSymbol = gameBoard[combination[2].row][combination[2].col]
+
+    if(firstSquareSymbol && firstSquareSymbol === secondSquareSymbol && firstSquareSymbol === thirdSquareSymbol){
+      console.log('Winner', firstSquareSymbol)
+      winner = players[firstSquareSymbol]
+    }
+  }
+  return winner
+}
+
 
 function deriveActivePlayer(gameTurns){
   let activePlayer = 'X'
@@ -35,17 +50,7 @@ function App() {
     gameBoard[row][col] = player
   }
 
-  let winner = null
-  for (const combination of WINNING_COMBINATIONS) {
-    const firstSquareSymbol = gameBoard[combination[0].row][combination[0].col]
-    const secondSquareSymbol = gameBoard[combination[1].row][combination[1].col]
-    const thirdSquareSymbol = gameBoard[combination[2].row][combination[2].col]
-
-    if(firstSquareSymbol && firstSquareSymbol === secondSquareSymbol && firstSquareSymbol === thirdSquareSymbol){
-      console.log('Winner', firstSquareSymbol)
-      winner = firstSquareSymbol
-    }
-  }
+  let winner = deriveWinner(gameBoard, players)
   
   function handleSelectSquare(rowIndex, colIndex, ){
     setGameTurns((prevTurns) => {
